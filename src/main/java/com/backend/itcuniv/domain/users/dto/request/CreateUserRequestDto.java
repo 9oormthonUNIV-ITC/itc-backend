@@ -10,4 +10,12 @@ public class CreateUserRequestDto {
     private String givenName;
     private String familyName;
     private String picture;
+
+    public CreateUserRequestDto(String email, String name, String givenName, String familyName, String picture) {
+        this.email = email;
+        this.name = name;
+        this.givenName = givenName;
+        this.familyName = familyName;
+        this.picture = picture;
+    }
 }

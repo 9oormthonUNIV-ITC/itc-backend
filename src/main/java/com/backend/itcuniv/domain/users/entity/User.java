@@ -7,7 +7,6 @@ import lombok.Setter;
 @Entity
 @Table(name="users")
 @Getter
-@Setter
 public class User {
 
     @Id
@@ -24,4 +23,12 @@ public class User {
     private String familyName; // 성
     @Column(name = "picture")
     private String picture; // 프로필 사진
+
+    public User(String email, String name, String givenName, String familyName, String picture) {
+        this.email = email;
+        this.name = name;
+        this.givenName = givenName;
+        this.familyName = familyName;
+        this.picture = picture;
+    }
 }
