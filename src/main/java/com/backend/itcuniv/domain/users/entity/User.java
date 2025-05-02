@@ -11,8 +11,11 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id")
+    private Long userId;
 
+    @Column(name = "id", unique = true)
+    private String id; // 구글에서 제공하는 고유 ID
     @Column(name = "email")
     private String email; // 이메일
     @Column(name = "name")
@@ -24,11 +27,14 @@ public class User {
     @Column(name = "picture")
     private String picture; // 프로필 사진
 
-    public User(String email, String name, String givenName, String familyName, String picture) {
+    public User(String id, String email, String name, String givenName, String familyName, String picture) {
+        this.id = id;
         this.email = email;
         this.name = name;
         this.givenName = givenName;
         this.familyName = familyName;
         this.picture = picture;
     }
+
+    public User() {}
 }

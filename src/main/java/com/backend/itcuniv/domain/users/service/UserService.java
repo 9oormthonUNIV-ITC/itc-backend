@@ -42,6 +42,7 @@ public class UserService {
    // 사용자 정보 저장 로직
     public void saveUser(CreateUserRequestDto dto) {
         User user = new User(
+                dto.getId(),
                 dto.getEmail(),
                 dto.getName(),
                 dto.getGivenName(),
@@ -108,8 +109,11 @@ public class UserService {
                 String.class
         );
 
+        System.out.println("Response Body: " + response.getBody());
+
+
         ObjectMapper objectMapper = new ObjectMapper();
-        CreateUserRequestDto userInfo = null;
+        CreateUserRequestDto userInfo;
 
         try {
             userInfo = objectMapper.readValue(response.getBody(), CreateUserRequestDto.class);
@@ -117,8 +121,11 @@ public class UserService {
             throw new RuntimeException(e);
         }
 
+        System.out.println("Service User Info: " + userInfo);
+
         // 4. DB에 사용자 정보 저장
         saveUser(userInfo);
+
 
         // 5. 응답 반환
         return new LoginResponseDto(
