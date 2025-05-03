@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 public class CreateUserRequestDto {
-    private Long userId;
-    private String id;
+    private Long userId;    // DB에서 ID
+    private String id;      // DB에서 userId
     private String email;
     private String name;
     @JsonProperty("given_name")

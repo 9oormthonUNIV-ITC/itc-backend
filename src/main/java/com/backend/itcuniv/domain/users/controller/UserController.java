@@ -1,6 +1,5 @@
 package com.backend.itcuniv.domain.users.controller;
 
-import com.backend.itcuniv.domain.users.dto.request.CreateUserRequestDto;
 import com.backend.itcuniv.domain.users.dto.response.LoginResponseDto;
 import com.backend.itcuniv.domain.users.repository.UserRepository;
 import com.backend.itcuniv.domain.users.service.UserService;
@@ -35,17 +34,17 @@ public class UserController {
 //    public ResponseEntity<LoginResponseDto> googleCallback(@RequestParam("code") String code) {
     public LoginResponseDto googleCallback(@RequestParam("code") String code) {
         // 1. 인가 코드 확인
-        System.out.println("Authorization Code: " + code);
+//        System.out.println("Authorization Code: " + code);
 
         // 2. 구글 서버에 인가 코드로 access token 요청
         String accessToken = userService.getAccessToken(code);
-        System.out.println("Access Token: " + accessToken);
+//        System.out.println("Access Token: " + accessToken);
 
         // 3. access token으로 사용자 정보 요청
-        LoginResponseDto userInfo = userService.getUserInfo(accessToken);
-        System.out.println("User Info: " + userInfo);
+        LoginResponseDto userResponse = userService.getUserInfo(accessToken);
+//        System.out.println("User Info: " + userInfo);
 
         // return문 -> id 이름 메일 -> db에도 저장
-        return userInfo;
+        return userResponse;
     }
 }

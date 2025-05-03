@@ -11,11 +11,11 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "id", unique = true)
-    private String id; // 구글에서 제공하는 고유 ID
+    @Column(name = "userId", unique = true)
+    private String userId; // 구글에서 제공하는 고유 ID
     @Column(name = "email")
     private String email; // 이메일
     @Column(name = "name")
@@ -28,7 +28,7 @@ public class User {
     private String picture; // 프로필 사진
 
     public User(String id, String email, String name, String givenName, String familyName, String picture) {
-        this.id = id;
+        this.userId = id;
         this.email = email;
         this.name = name;
         this.givenName = givenName;

@@ -109,9 +109,6 @@ public class UserService {
                 String.class
         );
 
-        System.out.println("Response Body: " + response.getBody());
-
-
         ObjectMapper objectMapper = new ObjectMapper();
         CreateUserRequestDto userInfo;
 
@@ -121,11 +118,10 @@ public class UserService {
             throw new RuntimeException(e);
         }
 
-        System.out.println("Service User Info: " + userInfo);
-
-        // 4. DB에 사용자 정보 저장
-        saveUser(userInfo);
-
+        if(!userRepository.existsByUserId(userInfo.getId())) {
+            // 4. DB에 사용자 정보 저장
+            saveUser(userInfo);
+        }
 
         // 5. 응답 반환
         return new LoginResponseDto(
