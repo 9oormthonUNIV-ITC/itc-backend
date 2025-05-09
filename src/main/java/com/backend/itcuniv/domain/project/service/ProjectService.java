@@ -6,8 +6,12 @@ import com.backend.itcuniv.domain.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,5 +46,21 @@ public class ProjectService {
             e.printStackTrace();
         }
 
+    }
+
+    public ResponseEntity<List<ProjectPost>> getAllProjectPosts(){
+        // 게시글 리스트 가져오기
+        List<ProjectPost> projectPosts = projectRepository.findAll();
+        if (projectPosts.isEmpty()) {
+            System.out.println("게시글이 없습니다.");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        System.out.println("게시글 리스트:");
+        for (ProjectPost post : projectPosts) {
+            System.out.println(post);
+        }
+
+       return new ResponseEntity<>(projectPosts, HttpStatus.OK);
     }
 }

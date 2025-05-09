@@ -1,13 +1,18 @@
 package com.backend.itcuniv.domain.project.controller;
 
 import com.backend.itcuniv.domain.project.dto.request.CreateProjectRequestDto;
+import com.backend.itcuniv.domain.project.entity.ProjectPost;
 import com.backend.itcuniv.domain.project.repository.ProjectRepository;
 import com.backend.itcuniv.domain.project.service.ProjectService;
 import com.backend.itcuniv.domain.users.repository.UserRepository;
 import com.backend.itcuniv.domain.users.service.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +24,7 @@ public class ProjectController {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
 
+    // 게시글 작성
     @PostMapping("/write")
     public ResponseEntity<?> createProjectPost(@RequestBody CreateProjectRequestDto createProjectRequestDto) {
         // 작성자 권한 확인
@@ -35,5 +41,67 @@ public class ProjectController {
         projectService.saveProjectPost(id, createProjectRequestDto);
 
         return ResponseEntity.ok("게시글 작성 완료");
+    }
+
+    // 프로젝트 게시글 리스트
+    @GetMapping("/list")
+    public ResponseEntity<List<ProjectPost>> getAllProjectPosts(@RequestParam(required = false, defaultValue = "5") int limit) {
+        return projectService.getAllProjectPosts();
+    }
+
+    // 게시글 조회
+    @GetMapping("/{postId}")
+    public ResponseEntity<ProjectPost> getProjectPost(@PathVariable Long postId) {
+        ProjectPost projectPost = projectRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+
+        return ResponseEntity.ok(projectPost);
+    }
+
+    // 게시글 수정
+    @PostMapping("/edit/{postId}")
+    public ResponseEntity<?> editProjectPost(@PathVariable Long postId, @RequestBody CreateProjectRequestDto dto) {
+        // 게시글 찾기
+        ProjectPost post = projectRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+
+        // 원본 작성자
+        String author = projectRepository.findNicknameById(postId);
+
+        // 수정자 권한 확인
+        if(!dto.getNickname().equals(author)) {
+            return ResponseEntity.status(403).body("작성자와 수정자가 일치하지 않습니다.");
+        }
+
+        // DB에 넣을 작성자 id 가져오기
+        Long id = userRepository.findIdByNickname(dto.getNickname())
+                .orElseThrow(() -> new RuntimeException("사용자 없음"))
+                .getId();
+
+        // DB에 저장
+        projectService.saveProjectPost(id, dto);
+
+        return ResponseEntity.ok("게시글 수정 완료");
+    }
+
+    @DeleteMapping("/delete/{postId}")
+    public ResponseEntity<?> deleteProjectPost(@PathVariable Long postId, @RequestBody String nickname) {
+
+        // 게시글 찾기
+        ProjectPost post = projectRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+
+        // 원본 작성자
+        String author = projectRepository.findNicknameById(postId);
+
+        // 삭제자 권한 확인
+        if(!author.equals(nickname)) {
+            return ResponseEntity.status(403).body("작성자와 삭제자가 일치하지 않습니다.");
+        }
+
+        // 게시글 삭제
+        projectRepository.deleteById(postId);
+
+        return ResponseEntity.ok("게시글 삭제 완료");
     }
 }
