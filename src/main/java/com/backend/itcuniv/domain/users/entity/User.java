@@ -8,7 +8,6 @@ import lombok.Setter;
 @Table(name="users")
 @Getter
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
