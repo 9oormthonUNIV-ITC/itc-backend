@@ -8,7 +8,6 @@ import lombok.Setter;
 @Table(name="users")
 @Getter
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -16,6 +15,8 @@ public class User {
 
     @Column(name = "userId", unique = true)
     private String userId; // 구글에서 제공하는 고유 ID
+    @Column(name = "nickname", unique = true)
+    private String nickname;
     @Column(name = "email")
     private String email; // 이메일
     @Column(name = "name")
@@ -27,8 +28,9 @@ public class User {
     @Column(name = "picture")
     private String picture; // 프로필 사진
 
-    public User(String id, String email, String name, String givenName, String familyName, String picture) {
+    public User(String id, String nickname, String email, String name, String givenName, String familyName, String picture) {
         this.userId = id;
+        this.nickname = nickname;
         this.email = email;
         this.name = name;
         this.givenName = givenName;

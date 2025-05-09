@@ -43,6 +43,7 @@ public class UserService {
     public void saveUser(CreateUserRequestDto dto) {
         User user = new User(
                 dto.getId(),
+                dto.getEmail().split("@")[0],
                 dto.getEmail(),
                 dto.getName(),
                 dto.getGivenName(),
