@@ -42,4 +42,12 @@ public class ProjectBoard {
         this.projectPicture = projectPicture;
         this.team = team;
     }
+
+    public void update(String title, String summery, String content, String projectPicture, String team) {
+        this.title = title;
+        this.summery = summery;
+        this.content = content;
+        this.projectPicture = projectPicture;
+        this.team = team;
+    }
 }

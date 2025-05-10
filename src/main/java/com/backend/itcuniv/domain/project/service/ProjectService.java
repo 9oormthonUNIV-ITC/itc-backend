@@ -10,7 +10,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +51,8 @@ public class ProjectService {
 
     }
 
-    public ProjectPageResponseDto getProjectPosts(Pageable pageable) {
+    // 프로젝트 게시글 리스트
+    public ProjectPageResponseDto getAllProjectPosts(Pageable pageable) {
         Page<ProjectBoard> page = projectRepository.findAll(pageable);
 
         List<ProjectPostResponseDto> content = page.stream()
@@ -80,5 +80,53 @@ public class ProjectService {
         );
 
         return result;
+    }
+
+    // 프로젝트 게시글 단일조회
+    public ProjectPostResponseDto getProjectPost(Long id) {
+        ProjectBoard projectBoard = projectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+
+        return new ProjectPostResponseDto(
+                projectBoard.getId(),
+                projectBoard.getUserId(),
+                projectBoard.getTitle(),
+                projectBoard.getSummery(),
+                projectBoard.getContent(),
+                projectBoard.getProjectPicture(),
+                projectBoard.getTeam()
+        );
+    }
+
+    // 프로젝트 게시글 수정
+    @Transactional
+    public ResponseEntity<?> editProjectPost(Long id, CreateProjectRequestDto dto) {
+        ProjectBoard projectBoard = projectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+
+        // todo: 작성자와 수정자가 같은 유저인지 권한 확인하는 로직 구현
+
+        projectBoard.update(
+                dto.getTitle(),
+                dto.getSummery(),
+                dto.getContent(),
+                dto.getBoardPicture(),
+                dto.getTeam()
+        );
+
+        return ResponseEntity.ok("게시글 수정 완료");
+    }
+
+    // 프로젝트 게시글 삭제
+    @Transactional
+    public ResponseEntity<?> deleteProjectPost(Long id) {
+        // 게시글 찾기
+        ProjectBoard post = projectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+
+        // 게시글 삭제
+        projectRepository.delete(post);
+
+        return ResponseEntity.ok("게시글 삭제 완료");
     }
 }
