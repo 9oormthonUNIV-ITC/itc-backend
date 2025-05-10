@@ -1,16 +1,20 @@
 package com.backend.itcuniv.domain.project.controller;
 
 import com.backend.itcuniv.domain.project.dto.request.CreateProjectRequestDto;
+import com.backend.itcuniv.domain.project.dto.response.ProjectPageResponseDto;
 import com.backend.itcuniv.domain.project.entity.ProjectBoard;
 import com.backend.itcuniv.domain.project.repository.ProjectRepository;
 import com.backend.itcuniv.domain.project.service.ProjectService;
 import com.backend.itcuniv.domain.users.repository.UserRepository;
 import com.backend.itcuniv.domain.users.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,8 +48,12 @@ public class ProjectController {
 
     // 프로젝트 게시글 리스트
     @GetMapping("/list")
-    public ResponseEntity<List<ProjectBoard>> getAllProjectPosts(@RequestParam(required = false, defaultValue = "5") int limit) {
-        return projectService.getAllProjectPosts();
+    public ResponseEntity<ProjectPageResponseDto> getAllProjectPosts(
+            @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        ProjectPageResponseDto dto = projectService.getProjectPosts(pageable);
+
+        return ResponseEntity.ok(dto);
     }
 
     // 게시글 조회

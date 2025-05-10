@@ -12,12 +12,10 @@ public class ProjectBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long projectId;
+    private Long id;
 
     @Column(name = "user_id")
     private Long userId;
-    @Column(name = "nickname")
-    private String nickname;
     @Column(name = "title")
     private String title;
     @Column(name = "summery")
@@ -31,7 +29,6 @@ public class ProjectBoard {
 
     public ProjectBoard(
             Long id,
-            String nickname,
             String title,
             String summery,
             String content,
@@ -39,7 +36,6 @@ public class ProjectBoard {
             String team
     ) {
         this.userId = id;
-        this.nickname = nickname;
         this.title = title;
         this.summery = summery;
         this.content = content;
