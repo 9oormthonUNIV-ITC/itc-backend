@@ -1,11 +1,15 @@
 package com.backend.itcuniv.domain.project.service;
 
 import com.backend.itcuniv.domain.project.dto.request.CreateProjectRequestDto;
+import com.backend.itcuniv.domain.project.dto.response.ProjectPageResponseDto;
+import com.backend.itcuniv.domain.project.dto.response.ProjectPostResponseDto;
 import com.backend.itcuniv.domain.project.entity.ProjectBoard;
 import com.backend.itcuniv.domain.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,7 +35,6 @@ public class ProjectService {
     public void saveProjectPost(Long id, CreateProjectRequestDto dto) {
         ProjectBoard projectBoard = new ProjectBoard(
                 id,
-                dto.getNickname(),
                 dto.getTitle(),
                 dto.getSummery(),
                 dto.getContent(),
@@ -49,19 +52,33 @@ public class ProjectService {
 
     }
 
-    public ResponseEntity<List<ProjectBoard>> getAllProjectPosts(){
-        // 게시글 리스트 가져오기
-        List<ProjectBoard> projectBoards = projectRepository.findAll();
-        if (projectBoards.isEmpty()) {
-            System.out.println("게시글이 없습니다.");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ProjectPageResponseDto getProjectPosts(Pageable pageable) {
+        Page<ProjectBoard> page = projectRepository.findAll(pageable);
 
-        System.out.println("게시글 리스트:");
-        for (ProjectBoard post : projectBoards) {
-            System.out.println(post);
-        }
+        List<ProjectPostResponseDto> content = page.stream()
+                .map(post -> new ProjectPostResponseDto(
+                        post.getId(),
+                        post.getUserId(),
+                        post.getTitle(),
+                        post.getSummery(),
+                        post.getContent(),
+                        post.getProjectPicture(),
+                        post.getTeam()
+                ))
+                .toList();
 
-       return new ResponseEntity<>(projectBoards, HttpStatus.OK);
+        ProjectPageResponseDto result = new ProjectPageResponseDto(
+                content,
+                page.getTotalPages(),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber(),
+                page.getNumberOfElements(),
+                page.isFirst(),
+                page.isLast(),
+                page.isEmpty()
+        );
+
+        return result;
     }
 }
