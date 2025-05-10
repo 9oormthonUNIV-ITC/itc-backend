@@ -2,18 +2,20 @@ package com.backend.itcuniv.domain.project.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "projectBoard")
+@Table(name = "project")
 @Getter
-public class ProjectPost {
+@NoArgsConstructor
+public class ProjectBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "project_id")
-    private Long project_id;
-
     @Column(name = "id")
-    private Long id;
+    private Long projectId;
+
+    @Column(name = "user_id")
+    private Long userId;
     @Column(name = "nickname")
     private String nickname;
     @Column(name = "title")
@@ -23,19 +25,25 @@ public class ProjectPost {
     @Column(name = "content")
     private String content;
     @Column(name = "project_picture")
-    private String project_picture;
+    private String projectPicture;
     @Column(name = "team" )
     private String team;
 
-    public ProjectPost(Long id, String nickname, String title, String summery, String content, String project_picture, String team) {
-        this.id = id;
+    public ProjectBoard(
+            Long id,
+            String nickname,
+            String title,
+            String summery,
+            String content,
+            String projectPicture,
+            String team
+    ) {
+        this.userId = id;
         this.nickname = nickname;
         this.title = title;
         this.summery = summery;
         this.content = content;
-        this.project_picture = project_picture;
+        this.projectPicture = projectPicture;
         this.team = team;
     }
-
-    public ProjectPost() {}
 }
