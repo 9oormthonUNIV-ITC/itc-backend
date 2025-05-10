@@ -82,7 +82,7 @@ public class ProjectService {
         return result;
     }
 
-    // 프로젝트 게시글 상세정보
+    // 프로젝트 게시글 단일조회
     public ProjectPostResponseDto getProjectPost(Long id) {
         ProjectBoard projectBoard = projectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("게시글 없음"));
