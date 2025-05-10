@@ -1,14 +1,12 @@
 package com.backend.itcuniv.domain.project.controller;
 
 import com.backend.itcuniv.domain.project.dto.request.CreateProjectRequestDto;
-import com.backend.itcuniv.domain.project.entity.ProjectPost;
+import com.backend.itcuniv.domain.project.entity.ProjectBoard;
 import com.backend.itcuniv.domain.project.repository.ProjectRepository;
 import com.backend.itcuniv.domain.project.service.ProjectService;
 import com.backend.itcuniv.domain.users.repository.UserRepository;
 import com.backend.itcuniv.domain.users.service.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +26,7 @@ public class ProjectController {
     @PostMapping("/write")
     public ResponseEntity<?> createProjectPost(@RequestBody CreateProjectRequestDto createProjectRequestDto) {
         // 작성자 권한 확인
+        // todo: 권한 확인은 nickname이 아닌 token 으로 변경
         if(!projectService.editAuth(createProjectRequestDto.getNickname())) {
             return ResponseEntity.status(403).body("권한이 없습니다.");
         }
@@ -45,24 +44,24 @@ public class ProjectController {
 
     // 프로젝트 게시글 리스트
     @GetMapping("/list")
-    public ResponseEntity<List<ProjectPost>> getAllProjectPosts(@RequestParam(required = false, defaultValue = "5") int limit) {
+    public ResponseEntity<List<ProjectBoard>> getAllProjectPosts(@RequestParam(required = false, defaultValue = "5") int limit) {
         return projectService.getAllProjectPosts();
     }
 
     // 게시글 조회
     @GetMapping("/{postId}")
-    public ResponseEntity<ProjectPost> getProjectPost(@PathVariable Long postId) {
-        ProjectPost projectPost = projectRepository.findById(postId)
+    public ResponseEntity<ProjectBoard> getProjectPost(@PathVariable Long postId) {
+        ProjectBoard projectBoard = projectRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글 없음"));
 
-        return ResponseEntity.ok(projectPost);
+        return ResponseEntity.ok(projectBoard);
     }
 
     // 게시글 수정
     @PostMapping("/edit/{postId}")
     public ResponseEntity<?> editProjectPost(@PathVariable Long postId, @RequestBody CreateProjectRequestDto dto) {
         // 게시글 찾기
-        ProjectPost post = projectRepository.findById(postId)
+        ProjectBoard post = projectRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글 없음"));
 
         // 원본 작성자
@@ -88,7 +87,7 @@ public class ProjectController {
     public ResponseEntity<?> deleteProjectPost(@PathVariable Long postId, @RequestBody String nickname) {
 
         // 게시글 찾기
-        ProjectPost post = projectRepository.findById(postId)
+        ProjectBoard post = projectRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글 없음"));
 
         // 원본 작성자

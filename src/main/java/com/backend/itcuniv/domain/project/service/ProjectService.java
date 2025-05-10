@@ -1,7 +1,7 @@
 package com.backend.itcuniv.domain.project.service;
 
 import com.backend.itcuniv.domain.project.dto.request.CreateProjectRequestDto;
-import com.backend.itcuniv.domain.project.entity.ProjectPost;
+import com.backend.itcuniv.domain.project.entity.ProjectBoard;
 import com.backend.itcuniv.domain.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -29,17 +29,18 @@ public class ProjectService {
     // Controller에서 작성자 정보 받아서 DB에서 가져온 다음에 id로 같이 전송
     @Transactional
     public void saveProjectPost(Long id, CreateProjectRequestDto dto) {
-        ProjectPost projectPost = new ProjectPost(
+        ProjectBoard projectBoard = new ProjectBoard(
                 id,
                 dto.getNickname(),
                 dto.getTitle(),
                 dto.getSummery(),
                 dto.getContent(),
                 dto.getBoardPicture(),
-                dto.getTeam());
+                dto.getTeam()
+        );
 
         try {
-            projectRepository.save(projectPost);
+            projectRepository.save(projectBoard);
             projectRepository.flush();  // 강제 DB 반영
         } catch (Exception e) {
             System.out.println("❌ 저장 중 예외 발생: " + e.getMessage());
@@ -48,19 +49,19 @@ public class ProjectService {
 
     }
 
-    public ResponseEntity<List<ProjectPost>> getAllProjectPosts(){
+    public ResponseEntity<List<ProjectBoard>> getAllProjectPosts(){
         // 게시글 리스트 가져오기
-        List<ProjectPost> projectPosts = projectRepository.findAll();
-        if (projectPosts.isEmpty()) {
+        List<ProjectBoard> projectBoards = projectRepository.findAll();
+        if (projectBoards.isEmpty()) {
             System.out.println("게시글이 없습니다.");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         System.out.println("게시글 리스트:");
-        for (ProjectPost post : projectPosts) {
+        for (ProjectBoard post : projectBoards) {
             System.out.println(post);
         }
 
-       return new ResponseEntity<>(projectPosts, HttpStatus.OK);
+       return new ResponseEntity<>(projectBoards, HttpStatus.OK);
     }
 }
