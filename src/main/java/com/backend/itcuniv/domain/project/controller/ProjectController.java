@@ -2,13 +2,13 @@ package com.backend.itcuniv.domain.project.controller;
 
 import com.backend.itcuniv.domain.project.dto.request.CreateProjectRequestDto;
 import com.backend.itcuniv.domain.project.dto.response.ProjectPageResponseDto;
+import com.backend.itcuniv.domain.project.dto.response.ProjectPostResponseDto;
 import com.backend.itcuniv.domain.project.entity.ProjectBoard;
 import com.backend.itcuniv.domain.project.repository.ProjectRepository;
 import com.backend.itcuniv.domain.project.service.ProjectService;
 import com.backend.itcuniv.domain.users.repository.UserRepository;
 import com.backend.itcuniv.domain.users.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -51,18 +51,17 @@ public class ProjectController {
     public ResponseEntity<ProjectPageResponseDto> getAllProjectPosts(
             @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        ProjectPageResponseDto dto = projectService.getProjectPosts(pageable);
+        ProjectPageResponseDto dto = projectService.getAllProjectPosts(pageable);
 
         return ResponseEntity.ok(dto);
     }
 
     // 게시글 조회
     @GetMapping("/{postId}")
-    public ResponseEntity<ProjectBoard> getProjectPost(@PathVariable Long postId) {
-        ProjectBoard projectBoard = projectRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+    public ResponseEntity<ProjectPostResponseDto> getProjectPost(@PathVariable Long postId) {
+        ProjectPostResponseDto dto = projectService.getProjectPost(postId);
 
-        return ResponseEntity.ok(projectBoard);
+        return ResponseEntity.ok(dto);
     }
 
     // 게시글 수정
