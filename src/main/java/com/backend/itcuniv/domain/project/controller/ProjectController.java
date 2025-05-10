@@ -56,7 +56,7 @@ public class ProjectController {
         return ResponseEntity.ok(dto);
     }
 
-    // 게시글 조회
+    // 게시글 단일 조회
     @GetMapping("/{postId}")
     public ResponseEntity<ProjectPostResponseDto> getProjectPost(@PathVariable Long postId) {
         ProjectPostResponseDto dto = projectService.getProjectPost(postId);
