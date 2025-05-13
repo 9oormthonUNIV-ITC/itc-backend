@@ -43,6 +43,7 @@ public class UserController {
 
         // 3. access token으로 사용자 정보 요청
         // return문 -> id 이름 메일 -> db에도 저장
+        System.out.println(userService.getUserInfo(accessToken));
         return userService.getUserInfo(accessToken);
     }
 }
