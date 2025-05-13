@@ -21,10 +21,8 @@ import org.springframework.data.domain.Pageable;
 @RequestMapping("/project-board")
 public class ProjectController {
 
-    private final UserService userService;
     private final ProjectService projectService;
     private final UserRepository userRepository;
-    private final ProjectRepository projectRepository;
 
     // 게시글 작성
     @PostMapping("/write")
