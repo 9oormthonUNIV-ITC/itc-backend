@@ -13,7 +13,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "userId", unique = true)
+    @Column(name = "google_id", unique = true)
     private String userId; // 구글에서 제공하는 고유 ID
     @Column(name = "nickname", unique = true)
     private String nickname;

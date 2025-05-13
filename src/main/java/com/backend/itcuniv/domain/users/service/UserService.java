@@ -101,7 +101,7 @@ public class UserService {
         // 2. HttpEntity 생성 (본문 없이 헤더만 설정)
         HttpEntity<String> request = new HttpEntity<>(headers);
 
-        // 3. RestTemplate으로 요청 전송
+        // 3. Google response 답변 파싱
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(
                 url,
@@ -119,6 +119,10 @@ public class UserService {
             throw new RuntimeException(e);
         }
 
+        System.out.println(userInfo.getId());
+        System.out.println(userInfo.getEmail());
+        System.out.println(userInfo.getName());
+
         if(!userRepository.existsByUserId(userInfo.getId())) {
             // 4. DB에 사용자 정보 저장
             saveUser(userInfo);
@@ -126,6 +130,7 @@ public class UserService {
 
         // 5. 응답 반환
         return new LoginResponseDto(
+                userInfo.getId(),   // 구글에서 보내는 구분 id
                 userInfo.getEmail(),
                 userInfo.getName()
         );
