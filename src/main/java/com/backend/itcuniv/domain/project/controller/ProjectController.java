@@ -28,15 +28,12 @@ public class ProjectController {
     @PostMapping("/write")
     public ResponseEntity<?> createProjectPost(@RequestBody CreateProjectRequestDto createProjectRequestDto) {
         // 작성자 권한 확인
-        // todo: 권한 확인은 nickname이 아닌 token 으로 변경
-        if(!projectService.editAuth(createProjectRequestDto.getNickname())) {
+        if(!projectService.editAuth(createProjectRequestDto.getAdminToken())) {
             return ResponseEntity.status(403).body("권한이 없습니다.");
         }
 
         // DB에 넣을 작성자 id 가져오기
-        Long id = userRepository.findIdByNickname(createProjectRequestDto.getNickname())
-                .orElseThrow(() -> new RuntimeException("사용자 없음"))
-                .getId();
+        Long id = userRepository.findIdByGoogleId(createProjectRequestDto.getAdminToken());
 
         // DB에 저장
         projectService.saveProjectPost(id, createProjectRequestDto);
@@ -65,13 +62,21 @@ public class ProjectController {
     // 게시글 수정
     @PatchMapping("/{postId}")
     public ResponseEntity<?> editProjectPost(@PathVariable Long postId, @RequestBody CreateProjectRequestDto dto) {
+        // 작성자 권한 확인
+        if(!projectService.editAuth(dto.getAdminToken())) {
+            return ResponseEntity.status(403).body("권한이 없습니다.");
+        }
 
         return projectService.editProjectPost(postId, dto);
     }
 
     // 게시글 삭제
     @DeleteMapping("/{postId}")
-    public ResponseEntity<?> deleteProjectPost(@PathVariable Long postId) {
+    public ResponseEntity<?> deleteProjectPost(@PathVariable Long postId, @RequestBody String adminToken) {
+        // 작성자 권한 확인
+        if(!projectService.editAuth(adminToken)) {
+            return ResponseEntity.status(403).body("권한이 없습니다.");
+        }
 
         return projectService.deleteProjectPost(postId);
     }

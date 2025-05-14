@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CreateUserRequestDto {
     private Long userId;    // DB에서 ID
-    private String id;      // DB에서 userId
+
+    private String id;      // DB에서 google_id
     private String email;
     private String name;
     @JsonProperty("given_name")

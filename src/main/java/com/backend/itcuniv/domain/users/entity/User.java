@@ -14,7 +14,7 @@ public class User {
     private Long id;
 
     @Column(name = "google_id", unique = true)
-    private String userId; // 구글에서 제공하는 고유 ID
+    private String googleId; // 구글에서 제공하는 고유 ID
     @Column(name = "nickname", unique = true)
     private String nickname;
     @Column(name = "email")
@@ -27,15 +27,18 @@ public class User {
     private String familyName; // 성
     @Column(name = "picture")
     private String picture; // 프로필 사진
+    @Column(name = "admin_token")
+    private int adminToken; // 권한 (0: 일반 사용자, 1: 관리자)
 
     public User(String id, String nickname, String email, String name, String givenName, String familyName, String picture) {
-        this.userId = id;
+        this.googleId = id;
         this.nickname = nickname;
         this.email = email;
         this.name = name;
         this.givenName = givenName;
         this.familyName = familyName;
         this.picture = picture;
+        this.adminToken = 0;
     }
 
     public User() {}

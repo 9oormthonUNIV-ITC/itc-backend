@@ -5,6 +5,7 @@ import com.backend.itcuniv.domain.project.dto.response.ProjectPageResponseDto;
 import com.backend.itcuniv.domain.project.dto.response.ProjectPostResponseDto;
 import com.backend.itcuniv.domain.project.entity.ProjectBoard;
 import com.backend.itcuniv.domain.project.repository.ProjectRepository;
+import com.backend.itcuniv.domain.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.ApplicationContext;
@@ -23,10 +24,12 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ApplicationContext applicationContext;
     private final ApplicationArguments applicationArguments;
+    private final UserRepository userRepository;
 
     // 작성자 권한 확인
-    public boolean editAuth(String nickname) {
-        return nickname.equals("9oormthonuniv.inhatc");
+    public boolean editAuth(String token) {
+
+        return (userRepository.findAdminTokenByGoogleId(token) == 1);
     }
 
     // Controller에서 작성자 정보 받아서 DB에서 가져온 다음에 id로 같이 전송
