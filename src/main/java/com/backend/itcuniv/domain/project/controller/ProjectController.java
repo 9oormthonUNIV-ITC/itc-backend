@@ -21,24 +21,19 @@ import org.springframework.data.domain.Pageable;
 @RequestMapping("/project-board")
 public class ProjectController {
 
-    private final UserService userService;
     private final ProjectService projectService;
     private final UserRepository userRepository;
-    private final ProjectRepository projectRepository;
 
     // 게시글 작성
     @PostMapping("/write")
     public ResponseEntity<?> createProjectPost(@RequestBody CreateProjectRequestDto createProjectRequestDto) {
         // 작성자 권한 확인
-        // todo: 권한 확인은 nickname이 아닌 token 으로 변경
-        if(!projectService.editAuth(createProjectRequestDto.getNickname())) {
+        if(!projectService.editAuth(createProjectRequestDto.getAdminToken())) {
             return ResponseEntity.status(403).body("권한이 없습니다.");
         }
 
         // DB에 넣을 작성자 id 가져오기
-        Long id = userRepository.findIdByNickname(createProjectRequestDto.getNickname())
-                .orElseThrow(() -> new RuntimeException("사용자 없음"))
-                .getId();
+        Long id = userRepository.findIdByGoogleId(createProjectRequestDto.getAdminToken());
 
         // DB에 저장
         projectService.saveProjectPost(id, createProjectRequestDto);
