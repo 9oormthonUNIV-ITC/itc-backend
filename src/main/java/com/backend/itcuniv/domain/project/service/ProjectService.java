@@ -25,8 +25,9 @@ public class ProjectService {
     private final ApplicationArguments applicationArguments;
 
     // 작성자 권한 확인
-    public boolean editAuth(String nickname) {
-        return nickname.equals("9oormthonuniv.inhatc");
+    public boolean editAuth(String token) {
+
+        return (projectRepository.findAuthByToken(token) == 1) ? true : false;
     }
 
     // Controller에서 작성자 정보 받아서 DB에서 가져온 다음에 id로 같이 전송

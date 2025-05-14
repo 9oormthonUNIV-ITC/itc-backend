@@ -12,6 +12,7 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
     private final UserService userService;
@@ -41,10 +42,8 @@ public class UserController {
 //        System.out.println("Access Token: " + accessToken);
 
         // 3. access token으로 사용자 정보 요청
-        LoginResponseDto userResponse = userService.getUserInfo(accessToken);
-//        System.out.println("User Info: " + userInfo);
-
         // return문 -> id 이름 메일 -> db에도 저장
-        return userResponse;
+        System.out.println(userService.getUserInfo(accessToken));
+        return userService.getUserInfo(accessToken);
     }
 }
