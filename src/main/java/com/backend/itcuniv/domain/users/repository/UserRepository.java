@@ -13,5 +13,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findIdByNickname(String nickname);
 
-    Long findIdByGoogleId(String token);
+    Long findIdByUserId(String token);
 }
