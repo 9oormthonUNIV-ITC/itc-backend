@@ -7,6 +7,4 @@ import java.awt.print.Pageable;
 import java.util.Optional;
 
 public interface ProjectRepository extends JpaRepository<ProjectBoard, Long> {
-
-    int findAuthByToken(String token);
 }
