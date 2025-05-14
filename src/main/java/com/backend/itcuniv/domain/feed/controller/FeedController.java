@@ -22,6 +22,9 @@ public class FeedController {
     @PostMapping("/write")
     public ResponseEntity<?> createFeed(@RequestBody CreateFeedDto dto) {
         // 권한 확인
+        if(!feedService.editAuth(dto.getAdminToken())){
+            return ResponseEntity.status(403).body("권한이 없습니다.");
+        }
 
         return feedService.feedSave(dto);
     }
@@ -30,14 +33,20 @@ public class FeedController {
     @PatchMapping("/{feed_id}")
     public ResponseEntity<?> updateFeed(@PathVariable Long feed_id, @RequestBody CreateFeedDto dto) {
         // 권한 확인
+        if(!feedService.editAuth(dto.getAdminToken())){
+            return ResponseEntity.status(403).body("권한이 없습니다.");
+        }
 
         return feedService.feedUpdate(feed_id, dto.getLink());
     }
 
     // 피드 삭제
     @DeleteMapping("/{feed_id}")
-    public ResponseEntity<?> deleteFeed(@PathVariable Long feed_id) {
+    public ResponseEntity<?> deleteFeed(@PathVariable Long feed_id, @RequestBody CreateFeedDto dto) {
         // 권한 확인
+        if(!feedService.editAuth(dto.getAdminToken())){
+            return ResponseEntity.status(403).body("권한이 없습니다.");
+        }
 
         return feedService.feedDelete(feed_id);
     }
