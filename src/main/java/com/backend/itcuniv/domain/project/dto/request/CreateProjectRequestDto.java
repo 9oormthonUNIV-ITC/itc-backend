@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class CreateProjectRequestDto {
 
-    private String token;
+    private String adminToken;
     private String title;
     private String summery;
     private String content;

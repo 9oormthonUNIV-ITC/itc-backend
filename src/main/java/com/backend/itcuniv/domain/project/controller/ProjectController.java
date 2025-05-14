@@ -28,12 +28,12 @@ public class ProjectController {
     @PostMapping("/write")
     public ResponseEntity<?> createProjectPost(@RequestBody CreateProjectRequestDto createProjectRequestDto) {
         // 작성자 권한 확인
-        if(!projectService.editAuth(createProjectRequestDto.getToken())) {
+        if(!projectService.editAuth(createProjectRequestDto.getAdminToken())) {
             return ResponseEntity.status(403).body("권한이 없습니다.");
         }
 
         // DB에 넣을 작성자 id 가져오기
-        Long id = userRepository.findIdByUserId(createProjectRequestDto.getToken());
+        Long id = userRepository.findIdByGoogleId(createProjectRequestDto.getAdminToken());
 
         // DB에 저장
         projectService.saveProjectPost(id, createProjectRequestDto);
