@@ -62,13 +62,21 @@ public class ProjectController {
     // 게시글 수정
     @PatchMapping("/{postId}")
     public ResponseEntity<?> editProjectPost(@PathVariable Long postId, @RequestBody CreateProjectRequestDto dto) {
+        // 작성자 권한 확인
+        if(!projectService.editAuth(dto.getAdminToken())) {
+            return ResponseEntity.status(403).body("권한이 없습니다.");
+        }
 
         return projectService.editProjectPost(postId, dto);
     }
 
     // 게시글 삭제
     @DeleteMapping("/{postId}")
-    public ResponseEntity<?> deleteProjectPost(@PathVariable Long postId) {
+    public ResponseEntity<?> deleteProjectPost(@PathVariable Long postId, @RequestBody String adminToken) {
+        // 작성자 권한 확인
+        if(!projectService.editAuth(adminToken)) {
+            return ResponseEntity.status(403).body("권한이 없습니다.");
+        }
 
         return projectService.deleteProjectPost(postId);
     }
