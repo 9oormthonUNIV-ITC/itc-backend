@@ -23,14 +23,16 @@ public class FeedService {
     private final FeedRepository feedRepository;
     private final UserRepository userRepository;
 
-    // todo: 권한 확인 로직
+    // 권한 확인
+    public boolean editAuth(String token) {
+
+        return (userRepository.findAdminTokenByGoogleId(token) == 1);
+    }
 
     // 피드 생성
     @Transactional
     public ResponseEntity<?> feedSave(CreateFeedDto dto) {
-        Long user_id = userRepository.findIdByNickname(dto.getNickname())
-                .orElseThrow(() -> new RuntimeException("사용자 없음"))
-                .getId();
+        Long user_id = userRepository.findIdByGoogleId(dto.getAdminToken());
 
         Feed feed = new Feed(user_id, dto.getLink());
 
