@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MypageService {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public MypageResponseDto getMyInfo(String adminToken) {
         String userName = userRepository.findUserNameByGoogleId(adminToken);

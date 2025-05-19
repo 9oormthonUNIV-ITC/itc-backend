@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/mypage")
 public class MypageController {
 
-    MypageService mypageService;
+    private final MypageService mypageService;
 
     // 정보 반환
     @PostMapping("/info")
