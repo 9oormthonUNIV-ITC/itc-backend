@@ -107,7 +107,15 @@ public class ProjectService {
         ProjectBoard projectBoard = projectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("게시글 없음"));
 
-        // todo: 작성자와 수정자가 같은 유저인지 권한 확인하는 로직 구현
+        // 수정자 권한 확인
+        if(!editAuth(dto.getAdminToken())) {
+            return ResponseEntity.status(403).body("권한이 없습니다.");
+        }
+
+        // 작성자, 수정자 일치 확인
+        if(!projectBoard.getUserId().equals(userRepository.findIdByGoogleId(dto.getAdminToken()))) {
+            return ResponseEntity.status(403).body("작성자와 수정자가 다릅니다.");
+        }
 
         projectBoard.update(
                 dto.getTitle(),
