@@ -11,12 +11,14 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByGoogleId(String googleId);
 
-    Optional<User> findIdByNickname(String nickname);
-
     @Query("SELECT u.id FROM User u WHERE u.googleId = :googleId")
     Long findIdByGoogleId(@Param("googleId") String googleId);
 
     @Query("SELECT u.adminToken FROM User u WHERE u.googleId = :googleId")
     Integer findAdminTokenByGoogleId(@Param("googleId") String googleId);
 
+
+    String finduserNameByGoogleId(String googleId);
+
+    String finduserEmailByGoogleId(String googleId);
 }
