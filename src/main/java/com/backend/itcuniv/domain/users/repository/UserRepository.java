@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Integer findAdminTokenByGoogleId(@Param("googleId") String googleId);
 
 
-    String finduserNameByGoogleId(String googleId);
+    String findUserNameByGoogleId(String googleId);
 
-    String finduserEmailByGoogleId(String googleId);
+    String findEmailByGoogleId(String googleId);
 }
