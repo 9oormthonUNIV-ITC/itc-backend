@@ -18,8 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Integer findAdminTokenByGoogleId(@Param("googleId") String googleId);
 
     @Query("SELECT u.userName FROM User u WHERE u.googleId = :googleId")
-    String findUserNameByGoogleId(String googleId);
+    String findUserNameByGoogleId(@Param("googleId")String googleId);
 
     @Query("SELECT u.email FROM User u WHERE u.googleId = :googleId")
-    String findEmailByGoogleId(String googleId);
+    String findEmailByGoogleId(@Param("googleId")String googleId);
 }
