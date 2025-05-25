@@ -25,8 +25,6 @@ public class User {
     private String givenName; // 이름
     @Column(name = "family_name")
     private String familyName; // 성
-    @Column(name = "user_name")
-    private String userName; // 사용자 이름
     @Column(name = "picture")
     private String picture; // 프로필 사진
     @Column(name = "admin_token")
@@ -39,7 +37,6 @@ public class User {
         this.name = name;
         this.givenName = givenName;
         this.familyName = familyName;
-        this.userName = familyName + givenName;
         this.picture = picture;
         this.adminToken = 0;
     }
