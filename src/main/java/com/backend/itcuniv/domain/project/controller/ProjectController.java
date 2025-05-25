@@ -33,7 +33,7 @@ public class ProjectController {
         }
 
         // DB에 넣을 작성자 id 가져오기
-        Long id = userRepository.findIdByGoogleId(createProjectRequestDto.getAdminToken());
+        Long id = userRepository.findIdByGoogleId(createProjectRequestDto.getAdminToken()).getFirst().getId();
 
         // DB에 저장
         projectService.saveProjectPost(id, createProjectRequestDto);

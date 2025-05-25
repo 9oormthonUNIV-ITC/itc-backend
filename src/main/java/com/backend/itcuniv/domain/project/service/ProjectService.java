@@ -28,8 +28,9 @@ public class ProjectService {
 
     // 작성자 권한 확인
     public boolean editAuth(String token) {
+        Long adminToken = userRepository.findIdByGoogleId(token).getFirst().getId();
 
-        return (userRepository.findAdminTokenByGoogleId(token) == 1);
+        return (adminToken == 1);
     }
 
     // Controller에서 작성자 정보 받아서 DB에서 가져온 다음에 id로 같이 전송
