@@ -2,6 +2,8 @@ package com.backend.itcuniv.domain.users.repository;
 
 import com.backend.itcuniv.domain.users.dto.response.IntegerAdminTokenDto;
 import com.backend.itcuniv.domain.users.dto.response.LongIdDto;
+import com.backend.itcuniv.domain.users.dto.response.StringEmailDto;
+import com.backend.itcuniv.domain.users.dto.response.StringNicknameDto;
 import com.backend.itcuniv.domain.users.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<IntegerAdminTokenDto> findAdminTokenByGoogleId(String googleId);
 
-    String findNicknameByGoogleId(String googleId);
+    List<StringNicknameDto> findNicknameByGoogleId(String googleId);
 
-    String findEmailByGoogleId(String googleId);
+    List<StringEmailDto> findEmailByGoogleId(String googleId);
 }
