@@ -25,14 +25,15 @@ public class FeedService {
 
     // 권한 확인
     public boolean editAuth(String token) {
+        Integer adminToken = userRepository.findAdminTokenByGoogleId(token).getFirst().getAdminToken();
 
-        return (userRepository.findAdminTokenByGoogleId(token) == 1);
+        return (adminToken == 1);
     }
 
     // 피드 생성
     @Transactional
     public ResponseEntity<?> feedSave(CreateFeedDto dto) {
-        Long user_id = userRepository.findIdByGoogleId(dto.getAdminToken());
+        Long user_id = userRepository.findIdByGoogleId(dto.getAdminToken()).getFirst().getId();
 
         Feed feed = new Feed(user_id, dto.getLink());
 
