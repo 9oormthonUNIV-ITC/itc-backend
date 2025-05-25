@@ -15,6 +15,7 @@ public class MypageService {
     public MypageResponseDto getMyInfo(String adminToken) {
         String userName = userRepository.findUserNameByGoogleId(adminToken);
         String email = userRepository.findEmailByGoogleId(adminToken);
+        String temp = userRepository.findIdByGoogleId(adminToken).toString();
 
         return new MypageResponseDto(userName, email);
     }
