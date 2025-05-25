@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/mypage")
 public class MypageController {
 
-    MypageService mypageService;
+    private final MypageService mypageService;
 
     // 정보 반환
     @PostMapping("/info")
-    public MypageResponseDto getInfo(@RequestBody String adminToken) {
+    public MypageResponseDto getInfo(@RequestParam(name = "adminToken") String adminToken) {
         // 만약 정보가 잘못되었거나 없다면 return 어떻게 보내야할지?
         return mypageService.getMyInfo(adminToken);
     }
