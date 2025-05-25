@@ -119,10 +119,6 @@ public class UserService {
             throw new RuntimeException(e);
         }
 
-        System.out.println(userInfo.getId());
-        System.out.println(userInfo.getEmail());
-        System.out.println(userInfo.getName());
-
         if(!userRepository.existsByGoogleId(userInfo.getId())) {
             // 4. DB에 사용자 정보 저장
             saveUser(userInfo);
